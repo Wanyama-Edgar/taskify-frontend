@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FaUserAlt, FaChevronDown, FaSignOutAlt } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
+import { API_URL } from "@/config";
 
 const Header = ({ user, setUser }) => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const Header = ({ user, setUser }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5000/auth/logout");
+      await axios.post(`${API_URL}/auth/logout`);
       setUser(null);
       navigate("/login");
     } catch (err) {

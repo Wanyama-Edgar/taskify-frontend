@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { API_URL } from "@/config";
 
 const Signin = ({ setUser }) => {
   const [form, setForm] = useState({
@@ -14,12 +15,12 @@ const Signin = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Login form submitted with:", { email: form.email });
-    
+
     try {
-      const res = await axios.post("http://localhost:5000/auth/login", form);
+      const res = await axios.post(`${API_URL}/auth/login`, form);
       console.log("Login response:", res.data);
       console.log("Cookies after login:", document.cookie);
-      
+
       setUser(res.data.user);
       navigate("/dashboard");
     } catch (err) {

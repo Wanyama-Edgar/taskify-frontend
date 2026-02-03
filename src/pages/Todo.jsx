@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { MdOutlineDone } from "react-icons/md";
+import { API_URL } from "@/config";
 
 const Todo = () => {
   const [todos, setTodos] = useState([]);
@@ -31,7 +32,7 @@ const Todo = () => {
   // Fetch todos
   const fetchTodos = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/todos");
+      const res = await axios.get(`${API_URL}/todos`);
       setTodos(res.data);
       setLoading(false);
     } catch (err) {
@@ -41,7 +42,7 @@ const Todo = () => {
       } else if (err.response?.data?.message) {
         errorMessage = err.response.data.message;
       }
-      
+
       setError(errorMessage);
       setLoading(false);
     }
@@ -60,7 +61,7 @@ const Todo = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/todos/add", add);
+      await axios.post(`${API_URL}/todos/add`, add);
       setAdd({ todo_description: "", completed: false });
       setSuccess("Todo added successfully!");
       setTimeout(() => setSuccess(""), 3000);
@@ -80,8 +81,8 @@ const Todo = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/todos/${edit.todo_id}`, {
-        todo_description: edit.todo_description
+      await axios.put(`${API_URL}/todos/${edit.todo_id}`, {
+        todo_description: edit.todo_description,
       });
       setEdit({ todo_description: "", todo_id: null });
       setSuccess("Todo updated successfully!");
@@ -96,7 +97,7 @@ const Todo = () => {
   const handleDelete = async (todoId) => {
     if (window.confirm("Are you sure you want to delete this todo?")) {
       try {
-        await axios.delete(`http://localhost:5000/todos/${todoId}`);
+        await axios.delete(`${API_URL}/todos/${todoId}`);
         setSuccess("Todo deleted successfully!");
         setTimeout(() => setSuccess(""), 3000);
         fetchTodos();
@@ -109,8 +110,8 @@ const Todo = () => {
 
   const toggleComplete = async (todoId, currentStatus) => {
     try {
-      await axios.put(`http://localhost:5000/todos/${todoId}`, {
-        completed: !currentStatus
+      await axios.put(`${API_URL}/todos/${todoId}`, {
+        completed: !currentStatus,
       });
       fetchTodos();
     } catch (err) {
@@ -122,7 +123,7 @@ const Todo = () => {
   const openEditDialog = (todo) => {
     setEdit({
       todo_description: todo.description,
-      todo_id: todo.todo_id
+      todo_id: todo.todo_id,
     });
   };
 
@@ -138,7 +139,7 @@ const Todo = () => {
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-center mb-8">My Tasks</h1>
-        
+
         {/* Success/Error Messages */}
         {success && (
           <div className="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
@@ -165,7 +166,10 @@ const Todo = () => {
                 </DialogHeader>
                 <form onSubmit={handleAdd}>
                   <div className="mb-4">
-                    <label htmlFor="add_todo_description" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="add_todo_description"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
                       Task Description:
                     </label>
                     <input
@@ -193,7 +197,7 @@ const Todo = () => {
                       </button>
                     </DialogClose>
                     <DialogClose asChild>
-                      <button 
+                      <button
                         type="button"
                         className="bg-gray-500 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded"
                       >
@@ -208,32 +212,48 @@ const Todo = () => {
 
           {todos.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg mb-4">No todos available. Add your first todo!</p>
+              <p className="text-gray-500 text-lg mb-4">
+                No todos available. Add your first todo!
+              </p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full table-auto">
                 <thead className="bg-gray-50 border-b">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ID
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Description
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {todos.map((todo) => (
                     <tr key={todo.todo_id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{todo.todo_id}</td>
-                      <td className={`px-6 py-4 text-sm ${todo.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {todo.todo_id}
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-sm ${todo.completed ? "line-through text-gray-500" : "text-gray-900"}`}
+                      >
                         {todo.description}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <button
-                          onClick={() => toggleComplete(todo.todo_id, todo.completed)}
+                          onClick={() =>
+                            toggleComplete(todo.todo_id, todo.completed)
+                          }
                           className={`h-6 w-6 border-2 rounded-full flex items-center justify-center transition-colors ${
-                            todo.completed 
-                              ? "bg-green-500 border-green-500 text-white" 
+                            todo.completed
+                              ? "bg-green-500 border-green-500 text-white"
                               : "border-gray-400 hover:border-green-400"
                           }`}
                         >
@@ -244,7 +264,7 @@ const Todo = () => {
                         <div className="flex space-x-2">
                           <Dialog>
                             <DialogTrigger asChild>
-                              <button 
+                              <button
                                 onClick={() => openEditDialog(todo)}
                                 className="text-blue-600 hover:text-blue-900 p-1"
                               >
@@ -288,7 +308,7 @@ const Todo = () => {
                                     </button>
                                   </DialogClose>
                                   <DialogClose asChild>
-                                    <button 
+                                    <button
                                       type="button"
                                       className="bg-gray-500 hover:bg-gray-600 text-white font-bold px-4 py-2 rounded"
                                     >
@@ -300,7 +320,7 @@ const Todo = () => {
                             </DialogContent>
                           </Dialog>
 
-                          <button 
+                          <button
                             onClick={() => handleDelete(todo.todo_id)}
                             className="text-red-600 hover:text-red-900 p-1"
                           >

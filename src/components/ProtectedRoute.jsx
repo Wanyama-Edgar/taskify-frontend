@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "@/config";
 
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -9,7 +10,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/auth/me");
+        const res = await axios.get(`${API_URL}/auth/me`);
         setUser(res.data);
       } catch (error) {
         setUser(null);

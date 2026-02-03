@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaUser, FaEnvelope, FaEdit, FaSave, FaTimes, FaKey, FaTrash } from "react-icons/fa";
+import {
+  FaUser,
+  FaEnvelope,
+  FaEdit,
+  FaSave,
+  FaTimes,
+  FaKey,
+  FaTrash,
+} from "react-icons/fa";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { API_URL } from "@/config";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -34,7 +43,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/auth/me");
+        const res = await axios.get(`${API_URL}/auth/me`);
         setUser(res.data);
         setEditForm({
           name: res.data.name,
@@ -54,9 +63,9 @@ const Profile = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
-    
+
     try {
-      const res = await axios.put("http://localhost:5000/auth/profile", editForm);
+      const res = await axios.put(`${API_URL}/auth/profile`, editForm);
       setUser(res.data.user);
       setSuccess("Profile updated successfully!");
       setIsEditing(false);
@@ -80,7 +89,7 @@ const Profile = () => {
     }
 
     try {
-      await axios.put("http://localhost:5000/auth/password", {
+      await axios.put(`${API_URL}/auth/password`, {
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword,
       });
@@ -100,7 +109,7 @@ const Profile = () => {
   // Handle account deletion
   const handleDeleteAccount = async () => {
     try {
-      await axios.delete("http://localhost:5000/auth/account");
+      await axios.delete(`${API_URL}/auth/account`);
       // Redirect to home page after account deletion
       window.location.href = "/";
     } catch (err) {
@@ -122,8 +131,12 @@ const Profile = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">My Profile</h1>
-          <p className="text-gray-600">Manage your account settings and preferences</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            My Profile
+          </h1>
+          <p className="text-gray-600">
+            Manage your account settings and preferences
+          </p>
         </div>
 
         {/* Success/Error Messages */}
@@ -143,7 +156,9 @@ const Profile = () => {
           <div className="md:col-span-2">
             <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Profile Information</h2>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+                  Profile Information
+                </h2>
                 {!isEditing && (
                   <button
                     onClick={() => setIsEditing(true)}
@@ -161,23 +176,31 @@ const Profile = () => {
                   <div className="flex items-center space-x-3">
                     <FaUser className="text-gray-400" />
                     <div>
-                      <label className="block text-sm font-medium text-gray-500">Name</label>
+                      <label className="block text-sm font-medium text-gray-500">
+                        Name
+                      </label>
                       <p className="text-lg text-gray-900">{user?.name}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
                     <FaEnvelope className="text-gray-400" />
                     <div>
-                      <label className="block text-sm font-medium text-gray-500">Email</label>
+                      <label className="block text-sm font-medium text-gray-500">
+                        Email
+                      </label>
                       <p className="text-lg text-gray-900">{user?.email}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="text-gray-400">📅</div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-500">Member Since</label>
+                      <label className="block text-sm font-medium text-gray-500">
+                        Member Since
+                      </label>
                       <p className="text-lg text-gray-900">
-                        {user?.created_at ? new Date(user.created_at).toLocaleDateString() : "N/A"}
+                        {user?.created_at
+                          ? new Date(user.created_at).toLocaleDateString()
+                          : "N/A"}
                       </p>
                     </div>
                   </div>
@@ -186,27 +209,37 @@ const Profile = () => {
                 // Edit Mode
                 <form onSubmit={handleUpdateProfile} className="space-y-4">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Name
                     </label>
                     <input
                       type="text"
                       id="name"
                       value={editForm.name}
-                      onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, name: e.target.value })
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
                       Email
                     </label>
                     <input
                       type="email"
                       id="email"
                       value={editForm.email}
-                      onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, email: e.target.value })
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
                     />
@@ -243,7 +276,9 @@ const Profile = () => {
           <div className="space-y-6">
             {/* Account Stats */}
             <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Stats</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Account Stats
+              </h3>
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Account Status</span>
@@ -252,7 +287,9 @@ const Profile = () => {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Member Since</span>
                   <span className="text-blue-600 font-medium text-sm">
-                    {user?.created_at ? new Date(user.created_at).getFullYear() : "N/A"}
+                    {user?.created_at
+                      ? new Date(user.created_at).getFullYear()
+                      : "N/A"}
                   </span>
                 </div>
               </div>
@@ -260,7 +297,9 @@ const Profile = () => {
 
             {/* Quick Actions */}
             <div className="bg-white rounded-lg shadow-md p-4 sm:p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Quick Actions
+              </h3>
               <div className="space-y-3">
                 {/* Change Password */}
                 <Dialog>
@@ -282,7 +321,12 @@ const Profile = () => {
                         <input
                           type="password"
                           value={passwordForm.currentPassword}
-                          onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
+                          onChange={(e) =>
+                            setPasswordForm({
+                              ...passwordForm,
+                              currentPassword: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           required
                         />
@@ -294,7 +338,12 @@ const Profile = () => {
                         <input
                           type="password"
                           value={passwordForm.newPassword}
-                          onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
+                          onChange={(e) =>
+                            setPasswordForm({
+                              ...passwordForm,
+                              newPassword: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           required
                         />
@@ -306,7 +355,12 @@ const Profile = () => {
                         <input
                           type="password"
                           value={passwordForm.confirmPassword}
-                          onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
+                          onChange={(e) =>
+                            setPasswordForm({
+                              ...passwordForm,
+                              confirmPassword: e.target.value,
+                            })
+                          }
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                           required
                         />
@@ -341,11 +395,15 @@ const Profile = () => {
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                      <DialogTitle className="text-red-600">Delete Account</DialogTitle>
+                      <DialogTitle className="text-red-600">
+                        Delete Account
+                      </DialogTitle>
                     </DialogHeader>
                     <div className="py-4">
                       <p className="text-gray-700 mb-4">
-                        Are you sure you want to delete your account? This action cannot be undone and will permanently remove all your data.
+                        Are you sure you want to delete your account? This
+                        action cannot be undone and will permanently remove all
+                        your data.
                       </p>
                       <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                         <p className="text-red-800 text-sm font-medium">
