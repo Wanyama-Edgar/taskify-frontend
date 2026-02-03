@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }) => {
       try {
         const res = await axios.get(`${API_URL}/auth/me`);
         setUser(res.data);
-      } catch (error) {
+      } catch {
         setUser(null);
       } finally {
         setLoading(false);

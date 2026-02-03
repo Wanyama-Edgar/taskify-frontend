@@ -23,7 +23,6 @@ import { API_URL } from "@/config";
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
-  const [todos, setTodos] = useState([]);
   const [stats, setStats] = useState({
     total: 0,
     completed: 0,
@@ -46,8 +45,8 @@ const Dashboard = () => {
       try {
         const res = await axios.get(`${API_URL}/auth/me`);
         setUser(res.data);
-      } catch (err) {
-        console.error("Failed to fetch user:", err);
+      } catch {
+        console.error("Failed to fetch user:");
       }
     };
     fetchUser();
@@ -59,7 +58,6 @@ const Dashboard = () => {
       try {
         const res = await axios.get(`${API_URL}/todos`);
         const todosData = res.data;
-        setTodos(todosData);
 
         // Calculate statistics
         const total = todosData.length;
@@ -74,7 +72,7 @@ const Dashboard = () => {
         setRecentTodos(todosData.slice(0, 5));
 
         setLoading(false);
-      } catch (err) {
+      } catch {
         setError("Failed to load dashboard data");
         setLoading(false);
       }
@@ -96,7 +94,6 @@ const Dashboard = () => {
       // Refresh todos
       const todosRes = await axios.get(`${API_URL}/todos`);
       const todosData = todosRes.data;
-      setTodos(todosData);
 
       // Update stats
       const total = todosData.length;
@@ -110,7 +107,7 @@ const Dashboard = () => {
 
       // Reset form
       setQuickAdd({ description: "", completed: false });
-    } catch (err) {
+    } catch {
       setError("Failed to add todo");
       setTimeout(() => setError(""), 3000);
     }
@@ -126,7 +123,6 @@ const Dashboard = () => {
       // Refresh data
       const res = await axios.get(`${API_URL}/todos`);
       const todosData = res.data;
-      setTodos(todosData);
 
       // Update stats
       const total = todosData.length;
@@ -137,7 +133,7 @@ const Dashboard = () => {
 
       setStats({ total, completed, pending, completionRate });
       setRecentTodos(todosData.slice(0, 5));
-    } catch (err) {
+    } catch {
       setError("Failed to update todo");
       setTimeout(() => setError(""), 3000);
     }

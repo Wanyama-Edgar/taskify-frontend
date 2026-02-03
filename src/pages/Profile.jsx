@@ -50,7 +50,7 @@ const Profile = () => {
           email: res.data.email,
         });
         setLoading(false);
-      } catch (err) {
+      } catch {
         setError("Failed to load user data");
         setLoading(false);
       }
