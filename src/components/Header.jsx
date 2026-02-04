@@ -13,11 +13,41 @@ const Header = ({ user, setUser }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post(`${API_URL}/auth/logout`);
+      // Get token for logout request
+      const token = localStorage.getItem("token");
+
+      // Call logout endpoint if token exists
+      if (token) {
+        await axios.post(
+          `${API_URL}/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      }
+
+      // Clear token from localStorage
+      localStorage.removeItem("token");
+
+      // Clear axios default headers
+      delete axios.defaults.headers.common["Authorization"];
+
+      // Clear user state
       setUser(null);
+
+      // Navigate to login page
       navigate("/login");
     } catch (err) {
-      console.error("Logout failed", err);
+      console.error("Logout failed:", err);
+
+      // Even if logout API fails, still clear local data
+      localStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
+      setUser(null);
+      navigate("/login");
     }
   };
 
@@ -43,7 +73,7 @@ const Header = ({ user, setUser }) => {
           to="/"
           className="text-2xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
         >
-          Taskify
+          Taskpile
         </Link>
       </div>
 

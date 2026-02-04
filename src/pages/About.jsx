@@ -6,31 +6,40 @@ const About = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">About Taskify</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            About Taskpile
+          </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Your personal productivity companion designed to help you organize, track, and accomplish your daily tasks with ease.
+            Your personal productivity companion designed to help you organize,
+            track, and accomplish your daily tasks with ease.
           </p>
         </div>
 
         {/* Main Content */}
         <div className="grid md:grid-cols-2 gap-12 mb-16">
-          {/* What is Taskify */}
+          {/* What is Taskpile */}
           <div className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">What is Taskify?</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              What is Taskpile?
+            </h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Taskify is a modern, intuitive todo application built to streamline your daily productivity. 
-              Whether you're managing personal tasks, work projects, or long-term goals, Taskify provides 
-              the tools you need to stay organized and focused.
+              Taskpile is a modern, intuitive todo application built to
+              streamline your daily productivity. Whether you're managing
+              personal tasks, work projects, or long-term goals, Taskpile
+              provides the tools you need to stay organized and focused.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              Our clean, user-friendly interface makes task management effortless, allowing you to spend 
-              less time organizing and more time accomplishing your goals.
+              Our clean, user-friendly interface makes task management
+              effortless, allowing you to spend less time organizing and more
+              time accomplishing your goals.
             </p>
           </div>
 
           {/* Key Features */}
           <div className="bg-white rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Key Features</h2>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Key Features
+            </h2>
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">✓</span>
@@ -62,35 +71,51 @@ const About = () => {
 
         {/* How It Works */}
         <div className="bg-white rounded-lg shadow-md p-8 mb-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">How It Works</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
+            How It Works
+          </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-blue-600">1</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Sign Up</h3>
-              <p className="text-gray-600">Create your free account to get started with Taskify</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Sign Up
+              </h3>
+              <p className="text-gray-600">
+                Create your free account to get started with Taskpile
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-green-600">2</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Add Tasks</h3>
-              <p className="text-gray-600">Quickly add tasks with descriptions and organize your workflow</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Add Tasks
+              </h3>
+              <p className="text-gray-600">
+                Quickly add tasks with descriptions and organize your workflow
+              </p>
             </div>
             <div className="text-center">
               <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-purple-600">3</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Stay Productive</h3>
-              <p className="text-gray-600">Track progress, complete tasks, and achieve your goals</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Stay Productive
+              </h3>
+              <p className="text-gray-600">
+                Track progress, complete tasks, and achieve your goals
+              </p>
             </div>
           </div>
         </div>
 
         {/* What You Can Do */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-8 mb-12">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">What You Can Do</h2>
+        <div className="bg-linear-to-r from-blue-50 to-purple-50 rounded-lg p-8 mb-12">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6 text-center">
+            What You Can Do
+          </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
@@ -99,7 +124,10 @@ const About = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Create Tasks</h4>
-                  <p className="text-gray-600 text-sm">Add new tasks with detailed descriptions to keep track of everything you need to do.</p>
+                  <p className="text-gray-600 text-sm">
+                    Add new tasks with detailed descriptions to keep track of
+                    everything you need to do.
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -108,7 +136,10 @@ const About = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Mark Complete</h4>
-                  <p className="text-gray-600 text-sm">Check off completed tasks and see your progress with visual completion indicators.</p>
+                  <p className="text-gray-600 text-sm">
+                    Check off completed tasks and see your progress with visual
+                    completion indicators.
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -117,7 +148,10 @@ const About = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Edit & Update</h4>
-                  <p className="text-gray-600 text-sm">Modify task descriptions and details as your priorities change.</p>
+                  <p className="text-gray-600 text-sm">
+                    Modify task descriptions and details as your priorities
+                    change.
+                  </p>
                 </div>
               </div>
             </div>
@@ -128,7 +162,9 @@ const About = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-gray-900">Delete Tasks</h4>
-                  <p className="text-gray-600 text-sm">Remove tasks that are no longer relevant or needed.</p>
+                  <p className="text-gray-600 text-sm">
+                    Remove tasks that are no longer relevant or needed.
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -136,8 +172,12 @@ const About = () => {
                   <span className="text-white text-sm">📊</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">Track Progress</h4>
-                  <p className="text-gray-600 text-sm">Monitor your productivity through your personal dashboard.</p>
+                  <h4 className="font-semibold text-gray-900">
+                    Track Progress
+                  </h4>
+                  <p className="text-gray-600 text-sm">
+                    Monitor your productivity through your personal dashboard.
+                  </p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
@@ -145,8 +185,12 @@ const About = () => {
                   <span className="text-white text-sm">👤</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">Manage Profile</h4>
-                  <p className="text-gray-600 text-sm">Customize your account settings and personal information.</p>
+                  <h4 className="font-semibold text-gray-900">
+                    Manage Profile
+                  </h4>
+                  <p className="text-gray-600 text-sm">
+                    Customize your account settings and personal information.
+                  </p>
                 </div>
               </div>
             </div>
@@ -155,15 +199,18 @@ const About = () => {
 
         {/* Mission Statement */}
         <div className="text-center bg-white rounded-lg shadow-md p-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+            Our Mission
+          </h2>
           <p className="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed">
-            We believe that productivity shouldn't be complicated. Taskify is designed to be simple, 
-            efficient, and powerful - helping you focus on what matters most while keeping your tasks 
-            organized and your goals within reach.
+            We believe that productivity shouldn't be complicated. Taskpile is
+            designed to be simple, efficient, and powerful - helping you focus
+            on what matters most while keeping your tasks organized and your
+            goals within reach.
           </p>
           <div className="mt-8">
-            <a 
-              href="/register" 
+            <a
+              href="/register"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-200 inline-block"
             >
               Get Started Today

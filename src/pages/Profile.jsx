@@ -39,20 +39,34 @@ const Profile = () => {
     confirmPassword: "",
   });
 
+  // Configure axios to include token in all requests
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }, []);
+
   // Fetch user data
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${API_URL}/auth/me`);
+        const token = localStorage.getItem("token");
+        const res = await axios.get(`${API_URL}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUser(res.data);
         setEditForm({
           name: res.data.name,
           email: res.data.email,
         });
         setLoading(false);
-      } catch {
+      } catch (err) {
         setError("Failed to load user data");
         setLoading(false);
+        console.error("Failed to fetch user:", err);
       }
     };
     fetchUser();
@@ -65,7 +79,12 @@ const Profile = () => {
     setSuccess("");
 
     try {
-      const res = await axios.put(`${API_URL}/auth/profile`, editForm);
+      const token = localStorage.getItem("token");
+      const res = await axios.put(`${API_URL}/auth/profile`, editForm, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUser(res.data.user);
       setSuccess("Profile updated successfully!");
       setIsEditing(false);
@@ -89,10 +108,19 @@ const Profile = () => {
     }
 
     try {
-      await axios.put(`${API_URL}/auth/password`, {
-        currentPassword: passwordForm.currentPassword,
-        newPassword: passwordForm.newPassword,
-      });
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `${API_URL}/auth/password`,
+        {
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       setSuccess("Password changed successfully!");
       setPasswordForm({
         currentPassword: "",
@@ -109,8 +137,14 @@ const Profile = () => {
   // Handle account deletion
   const handleDeleteAccount = async () => {
     try {
-      await axios.delete(`${API_URL}/auth/account`);
-      // Redirect to home page after account deletion
+      const token = localStorage.getItem("token");
+      await axios.delete(`${API_URL}/auth/account`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // Clear token and redirect to home page after account deletion
+      localStorage.removeItem("token");
       window.location.href = "/";
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete account");

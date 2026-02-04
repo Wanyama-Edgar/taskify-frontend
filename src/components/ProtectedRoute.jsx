@@ -10,9 +10,24 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get(`${API_URL}/auth/me`);
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        const res = await axios.get(`${API_URL}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUser(res.data);
-      } catch {
+      } catch (err) {
+        console.error("Authentication failed:", err);
+        // Clear invalid token
+        localStorage.removeItem("token");
         setUser(null);
       } finally {
         setLoading(false);

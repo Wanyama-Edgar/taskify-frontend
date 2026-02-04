@@ -39,14 +39,27 @@ const Dashboard = () => {
     completed: false,
   });
 
+  // Configure axios to include token in all requests
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }, []);
+
   // Fetch user data
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`${API_URL}/auth/me`);
+        const token = localStorage.getItem("token");
+        const res = await axios.get(`${API_URL}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUser(res.data);
-      } catch {
-        console.error("Failed to fetch user:");
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
       }
     };
     fetchUser();
@@ -56,7 +69,12 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const res = await axios.get(`${API_URL}/todos`);
+        const token = localStorage.getItem("token");
+        const res = await axios.get(`${API_URL}/todos`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const todosData = res.data;
 
         // Calculate statistics
@@ -72,9 +90,10 @@ const Dashboard = () => {
         setRecentTodos(todosData.slice(0, 5));
 
         setLoading(false);
-      } catch {
+      } catch (err) {
         setError("Failed to load dashboard data");
         setLoading(false);
+        console.error("Failed to fetch todos:", err);
       }
     };
     fetchTodos();
@@ -86,13 +105,26 @@ const Dashboard = () => {
     if (!quickAdd.description.trim()) return;
 
     try {
-      await axios.post(`${API_URL}/todos/add`, {
-        todo_description: quickAdd.description,
-        completed: false,
-      });
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `${API_URL}/todos/add`,
+        {
+          todo_description: quickAdd.description,
+          completed: false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       // Refresh todos
-      const todosRes = await axios.get(`${API_URL}/todos`);
+      const todosRes = await axios.get(`${API_URL}/todos`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const todosData = todosRes.data;
 
       // Update stats
@@ -107,21 +139,35 @@ const Dashboard = () => {
 
       // Reset form
       setQuickAdd({ description: "", completed: false });
-    } catch {
+    } catch (err) {
       setError("Failed to add todo");
       setTimeout(() => setError(""), 3000);
+      console.error("Failed to add todo:", err);
     }
   };
 
   // Toggle todo completion
   const toggleTodoCompletion = async (todoId, currentStatus) => {
     try {
-      await axios.put(`${API_URL}/todos/${todoId}`, {
-        completed: !currentStatus,
-      });
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `${API_URL}/todos/${todoId}`,
+        {
+          completed: !currentStatus,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       // Refresh data
-      const res = await axios.get(`${API_URL}/todos`);
+      const res = await axios.get(`${API_URL}/todos`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const todosData = res.data;
 
       // Update stats
@@ -133,9 +179,10 @@ const Dashboard = () => {
 
       setStats({ total, completed, pending, completionRate });
       setRecentTodos(todosData.slice(0, 5));
-    } catch {
+    } catch (err) {
       setError("Failed to update todo");
       setTimeout(() => setError(""), 3000);
+      console.error("Failed to update todo:", err);
     }
   };
 
@@ -368,7 +415,7 @@ const Dashboard = () => {
                 <div className="text-center py-8">
                   <FaTasks className="text-gray-300 text-4xl mx-auto mb-4" />
                   <p className="text-gray-500 mb-4">
-                    No tasks yet. Create your first task!
+                    You don't have any tasks yet. Create your first task!
                   </p>
                   <Dialog>
                     <DialogTrigger asChild>
@@ -477,13 +524,13 @@ const Dashboard = () => {
 
         {/* Welcome Message for New Users */}
         {stats.total === 0 && (
-          <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 sm:p-8 text-center">
+          <div className="mt-8 bg-linear-to-r from-blue-50 to-purple-50 rounded-lg p-6 sm:p-8 text-center">
             <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4">
               Welcome to Taskify! 🎉
             </h3>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
               You're all set up and ready to boost your productivity. Start by
-              creating your first task and experience how Taskify can help you
+              creating your first task and experience how Taskpile can help you
               stay organized and focused.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -541,7 +588,7 @@ const Dashboard = () => {
                 to="/about"
                 className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-medium"
               >
-                Learn More About Taskify
+                Learn More About Taskpile
               </Link>
             </div>
           </div>
