@@ -27,7 +27,7 @@ const ProtectedRoute = ({ children }) => {
         setUser(res.data);
       } catch (err) {
         console.error("Authentication failed:", err);
-        // Clear invalid token
+
         localStorage.removeItem("token");
         setUser(null);
       } finally {
