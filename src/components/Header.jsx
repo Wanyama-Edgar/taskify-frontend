@@ -14,7 +14,6 @@ const Header = ({ user, setUser }) => {
 
   const handleLogout = async () => {
     try {
-      // Get token for logout request
       const token = localStorage.getItem("token");
 
       // Call logout endpoint if token exists
