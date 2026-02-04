@@ -11,7 +11,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { MdOutlineDone } from "react-icons/md";
-import { API_URL } from "@/config";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Todo = () => {
   const [todos, setTodos] = useState([]);

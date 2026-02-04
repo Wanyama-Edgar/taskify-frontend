@@ -19,7 +19,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { API_URL } from "@/config";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);

@@ -3,7 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FaUserAlt, FaChevronDown, FaSignOutAlt } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
-import { API_URL } from "@/config";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Header = ({ user, setUser }) => {
   const navigate = useNavigate();
