@@ -40,23 +40,12 @@ const Dashboard = () => {
     completed: false,
   });
 
-  // Configure axios to include token in all requests
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    }
-  }, []);
-
   // Fetch user data
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await axios.get(`${API_URL}/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         });
         setUser(res.data);
       } catch (err) {
@@ -70,11 +59,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await axios.get(`${API_URL}/todos`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         });
         const todosData = res.data;
 
@@ -106,7 +92,6 @@ const Dashboard = () => {
     if (!quickAdd.description.trim()) return;
 
     try {
-      const token = localStorage.getItem("token");
       await axios.post(
         `${API_URL}/todos/add`,
         {
@@ -114,17 +99,13 @@ const Dashboard = () => {
           completed: false,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         },
       );
 
       // Refresh todos
       const todosRes = await axios.get(`${API_URL}/todos`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
       const todosData = todosRes.data;
 
@@ -150,24 +131,19 @@ const Dashboard = () => {
   // Toggle todo completion
   const toggleTodoCompletion = async (todoId, currentStatus) => {
     try {
-      const token = localStorage.getItem("token");
       await axios.put(
         `${API_URL}/todos/${todoId}`,
         {
           completed: !currentStatus,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         },
       );
 
       // Refresh data
       const res = await axios.get(`${API_URL}/todos`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
       const todosData = res.data;
 
@@ -416,7 +392,7 @@ const Dashboard = () => {
                 <div className="text-center py-8">
                   <FaTasks className="text-gray-300 text-4xl mx-auto mb-4" />
                   <p className="text-gray-500 mb-4">
-                    You don't have any tasks yet. Create your first task!
+                    No tasks yet. Create your first task!
                   </p>
                   <Dialog>
                     <DialogTrigger asChild>
@@ -531,7 +507,7 @@ const Dashboard = () => {
             </h3>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
               You're all set up and ready to boost your productivity. Start by
-              creating your first task and experience how Taskpile can help you
+              creating your first task and experience how Taskify can help you
               stay organized and focused.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -589,7 +565,7 @@ const Dashboard = () => {
                 to="/about"
                 className="bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-medium"
               >
-                Learn More About Taskpile
+                Learn More About Taskify
               </Link>
             </div>
           </div>

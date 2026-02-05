@@ -40,23 +40,12 @@ const Profile = () => {
     confirmPassword: "",
   });
 
-  // Configure axios to include token in all requests
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    }
-  }, []);
-
   // Fetch user data
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
         const res = await axios.get(`${API_URL}/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         });
         setUser(res.data);
         setEditForm({
@@ -80,11 +69,8 @@ const Profile = () => {
     setSuccess("");
 
     try {
-      const token = localStorage.getItem("token");
       const res = await axios.put(`${API_URL}/auth/profile`, editForm, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
       setUser(res.data.user);
       setSuccess("Profile updated successfully!");
@@ -109,7 +95,6 @@ const Profile = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       await axios.put(
         `${API_URL}/auth/password`,
         {
@@ -117,9 +102,7 @@ const Profile = () => {
           newPassword: passwordForm.newPassword,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         },
       );
       setSuccess("Password changed successfully!");
@@ -138,14 +121,10 @@ const Profile = () => {
   // Handle account deletion
   const handleDeleteAccount = async () => {
     try {
-      const token = localStorage.getItem("token");
       await axios.delete(`${API_URL}/auth/account`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
-      // Clear token and redirect to home page after account deletion
-      localStorage.removeItem("token");
+      // Redirect to home page after account deletion
       window.location.href = "/";
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete account");

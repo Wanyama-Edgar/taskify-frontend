@@ -11,8 +11,6 @@ import Profile from "./pages/Profile.jsx";
 import ProtectedLayout from "./layout/ProtectedLayout.jsx";
 import PublicLayout from "./layout/PublicLayout.jsx";
 
-//axios.defaults.withCredentials = true;
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 const App = () => {

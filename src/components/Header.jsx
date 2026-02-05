@@ -14,26 +14,14 @@ const Header = ({ user, setUser }) => {
 
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
-
-      // Call logout endpoint if token exists
-      if (token) {
-        await axios.post(
-          `${API_URL}/auth/logout`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-      }
-
-      // Clear token from localStorage
-      localStorage.removeItem("token");
-
-      // Clear axios default headers
-      delete axios.defaults.headers.common["Authorization"];
+      // Call logout endpoint with cookies
+      await axios.post(
+        `${API_URL}/auth/logout`,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
 
       // Clear user state
       setUser(null);
@@ -43,9 +31,7 @@ const Header = ({ user, setUser }) => {
     } catch (err) {
       console.error("Logout failed:", err);
 
-      // Even if logout API fails, still clear local data
-      localStorage.removeItem("token");
-      delete axios.defaults.headers.common["Authorization"];
+      // Even if logout API fails, still clear user state
       setUser(null);
       navigate("/login");
     }

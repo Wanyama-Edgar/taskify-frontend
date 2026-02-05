@@ -40,25 +40,15 @@ const Signup = ({ setUser }) => {
     }
 
     try {
-      const res = await axios.post(`${API_URL}/auth/register`, form);
+      const res = await axios.post(`${API_URL}/auth/register`, form, {
+        withCredentials: true, // Enable cookies
+      });
       console.log("Signup successful:", res.data);
 
-      // Extract token and user from response
-      const { token, user } = res.data;
-
-      // Store token in localStorage
-      if (token) {
-        localStorage.setItem("token", token);
-        console.log("Token stored successfully");
-      }
-
       // Set user in app state
-      if (user) {
-        setUser(user);
+      if (res.data.user) {
+        setUser(res.data.user);
       }
-
-      // Configure axios to use token for future requests
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       // Clear form
       setForm({ name: "", email: "", password: "" });
@@ -128,13 +118,13 @@ const Signup = ({ setUser }) => {
               htmlFor="name"
               className="block font-semibold text-gray-700 mb-2"
             >
-              User Name
+              Full Name
             </label>
             <input
               type="text"
               id="name"
               name="name"
-              placeholder="Enter your name"
+              placeholder="John Doe"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               className="border border-gray-300 w-full py-2 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -175,7 +165,7 @@ const Signup = ({ setUser }) => {
               type="password"
               id="password"
               name="password"
-              placeholder="Enter your password"
+              placeholder="At least 6 characters"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="border border-gray-300 w-full py-2 px-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

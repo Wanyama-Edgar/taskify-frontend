@@ -30,22 +30,11 @@ const Todo = () => {
     todo_id: null,
   });
 
-  // Configure axios to include token in all requests
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    }
-  }, []);
-
   // Fetch todos
   const fetchTodos = async () => {
     try {
-      const token = localStorage.getItem("token");
       const res = await axios.get(`${API_URL}/todos`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
       setTodos(res.data);
       setLoading(false);
@@ -75,11 +64,8 @@ const Todo = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       await axios.post(`${API_URL}/todos/add`, add, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        withCredentials: true,
       });
       setAdd({ todo_description: "", completed: false });
       setSuccess("Todo added successfully!");
@@ -100,16 +86,13 @@ const Todo = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       await axios.put(
         `${API_URL}/todos/${edit.todo_id}`,
         {
           todo_description: edit.todo_description,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         },
       );
       setEdit({ todo_description: "", todo_id: null });
@@ -125,11 +108,8 @@ const Todo = () => {
   const handleDelete = async (todoId) => {
     if (window.confirm("Are you sure you want to delete this todo?")) {
       try {
-        const token = localStorage.getItem("token");
         await axios.delete(`${API_URL}/todos/${todoId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         });
         setSuccess("Todo deleted successfully!");
         setTimeout(() => setSuccess(""), 3000);
@@ -143,16 +123,13 @@ const Todo = () => {
 
   const toggleComplete = async (todoId, currentStatus) => {
     try {
-      const token = localStorage.getItem("token");
       await axios.put(
         `${API_URL}/todos/${todoId}`,
         {
           completed: !currentStatus,
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true,
         },
       );
       fetchTodos();
@@ -172,7 +149,7 @@ const Todo = () => {
   if (loading) {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <div className="text-xl text-gray-600">Loading tasks...</div>
+        <div className="text-xl text-gray-600">Loading todos...</div>
       </div>
     );
   }
@@ -255,7 +232,7 @@ const Todo = () => {
           {todos.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg mb-4">
-                No tasks available. Add your first task!
+                No todos available. Add your first todo!
               </p>
             </div>
           ) : (

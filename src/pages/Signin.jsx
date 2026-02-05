@@ -27,25 +27,15 @@ const Signin = ({ setUser }) => {
     }
 
     try {
-      const res = await axios.post(`${API_URL}/auth/login`, form);
+      const res = await axios.post(`${API_URL}/auth/login`, form, {
+        withCredentials: true, // Enable cookies
+      });
       console.log("Login successful:", res.data);
 
-      // Extract token and user from response
-      const { token, user } = res.data;
-
-      // Store token in localStorage
-      if (token) {
-        localStorage.setItem("token", token);
-        console.log("Token stored successfully");
-      }
-
       // Set user in app state
-      if (user) {
-        setUser(user);
+      if (res.data.user) {
+        setUser(res.data.user);
       }
-
-      // Configure axios to use token for future requests
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       // Clear form
       setForm({ email: "", password: "" });
