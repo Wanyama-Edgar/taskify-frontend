@@ -21,7 +21,7 @@ const Home = () => {
           <img
             src={homepage}
             className="max-w-full max-h-full"
-            alt="Taskify Homepage"
+            alt="Taskpile Homepage"
           />
         </div>
       </div>

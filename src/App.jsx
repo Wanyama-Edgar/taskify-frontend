@@ -13,6 +13,8 @@ import PublicLayout from "./layout/PublicLayout.jsx";
 
 axios.defaults.withCredentials = true;
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,7 +22,7 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/auth/me");
+        const res = await axios.get(`${API_URL}/auth/me`);
         setUser(res.data);
       } catch {
         setUser(null);
@@ -45,22 +47,30 @@ const App = () => {
       <Route element={<PublicLayout user={user} setUser={setUser} />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route 
-          path="/login" 
+        <Route
+          path="/login"
           element={
-            user ? <Navigate to="/dashboard" replace /> : <Signin setUser={setUser} />
-          } 
+            user ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Signin setUser={setUser} />
+            )
+          }
         />
-        <Route 
-          path="/register" 
+        <Route
+          path="/register"
           element={
-            user ? <Navigate to="/dashboard" replace /> : <Signup setUser={setUser} />
-          } 
+            user ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Signup setUser={setUser} />
+            )
+          }
         />
       </Route>
 
       {/*Protected Routes*/}
-      <Route 
+      <Route
         element={
           user ? (
             <ProtectedLayout user={user} setUser={setUser} />
@@ -75,9 +85,9 @@ const App = () => {
       </Route>
 
       {/* Redirect root to appropriate page */}
-      <Route 
-        path="*" 
-        element={<Navigate to={user ? "/dashboard" : "/"} replace />} 
+      <Route
+        path="*"
+        element={<Navigate to={user ? "/dashboard" : "/"} replace />}
       />
     </Routes>
   );
