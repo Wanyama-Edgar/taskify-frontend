@@ -1,45 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Signin from "./pages/Signin.jsx";
 import Signup from "./pages/Signup.jsx";
-import axios from "axios";
 import Todo from "./pages/Todo.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Profile from "./pages/Profile.jsx";
 import ProtectedLayout from "./layout/ProtectedLayout.jsx";
 import PublicLayout from "./layout/PublicLayout.jsx";
 
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get(`${API_URL}/auth/me`);
-        setUser(res.data);
-      } catch {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading...</div>
-      </div>
-    );
-  }
 
   return (
     <Routes>
